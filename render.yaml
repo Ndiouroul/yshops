@@ -1,16 +1,22 @@
-# Exported from Render on 2025-11-23T15:53:21Z
-version: "1"
-projects:
-- name: My project
-  environments:
-  - name: Production
-    services:
-    - type: web
-      name: yshops
-      runtime: node
-      repo: https://github.com/Ndiouroul/yshops
-      plan: free
-      region: oregon
-      buildCommand: npm install
-      startCommand: node vite.config.js
-      autoDeployTrigger: commit
+envVars:
+  - key: APP_ENV
+    value: production
+  - key: APP_DEBUG
+    value: 'false'
+  - key: APP_KEY
+    value: base64:uNhm4eZ9o7QuvZlCrvlPqD3EUaNqWP9gZjO5jS+Jk8c=
+  - key: APP_URL
+    value: https://yshops.onrender.com   # Remplace par l'URL Render
+  - key: DB_CONNECTION
+    value: mysql
+  - key: DB_HOST
+    value: <Render-MySQL-host>
+  - key: DB_PORT
+    value: '3306'
+  - key: DB_DATABASE
+    value: <Render-MySQL-database>
+  - key: DB_USERNAME
+    value: <Render-MySQL-username>
+  - key: DB_PASSWORD
+    value: <Render-MySQL-password>
+
