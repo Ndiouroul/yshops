@@ -87,10 +87,10 @@ return new class extends Migration
 
         Schema::create('accreditations', function (Blueprint $table){
             $table->id();
-            $table->string('accreditation_matricule', 50);
-            $table->string('agent_matricule', 50);
-            $table->string('responsable_matricule', 50);
-            $table->string('structure_matricule', 50);
+            $table->string('accreditation_matricule', 100);
+            $table->string('agent_matricule', 100);
+            $table->string('responsable_matricule', 100);
+            $table->string('structure_matricule', 100);
             $table->enum('role', ['caissier', 'gerant']);
             $table->enum('privilege', ['eleve','normal'])->default('normal');
             $table->enum('gestion_stock',['ok', 'none'])->default('none');
@@ -105,8 +105,8 @@ return new class extends Migration
         Schema::create('fournisseurs', function (Blueprint $table) {
             $table->id();
             $table->string('fournisseur_matricule',100);
-            $table->string('structure_matricule',50);
-            $table->string('responsable_matricule',50);
+            $table->string('structure_matricule',100);
+            $table->string('responsable_matricule',100);
             $table->string('nom_fournisseur',50)->unique();
             $table->string('sigle_fournisseur',50)->nullable();
             $table->string('adresse',255)->nullable();
@@ -217,7 +217,7 @@ return new class extends Migration
         Schema::create('ventes', function (Blueprint $table) {
             $table->id();
             $table->string('vente_matricule',100);
-            $table->string('recue_matricule',50);
+            $table->string('recue_matricule',100);
             $table->integer('prix_total')->default(0);
             $table->string('structure_matricule',50)->nullable();
             $table->string('vendeur_matricule',50);
@@ -246,8 +246,8 @@ return new class extends Migration
         Schema::create('depenses', function (Blueprint $table){
             $table->id();
             $table->string('depense_matricule',100);
-            $table->string('charge_matricule',50);
-            $table->string('ingredient_matricule', 50);
+            $table->string('charge_matricule',100);
+            $table->string('ingredient_matricule', 100);
             $table->decimal('quantite', 9, 2);
             $table->decimal('prix',15, 2);
             $table->decimal('total',15, 2);
@@ -273,7 +273,7 @@ return new class extends Migration
         Schema::create('editings', function (Blueprint $table){
             $table->id();
             $table->string('edit_matricule',100);
-            $table->string('edited_matricule',50);
+            $table->string('edited_matricule',100);
             $table->string('field_edited',50);
             $table->string('table',50);
             $table->string('before_value',255);
@@ -287,7 +287,7 @@ return new class extends Migration
         Schema::create('livreurs', function (Blueprint $table) {
             $table->id();
             $table->string('livreur_matricule',100);
-            $table->string('user_matricule',50);
+            $table->string('user_matricule',100);
             $table->string('groupe',50);
             $table->enum('type', ['departemental', 'regionnal', 'nationnal', 'internationnal']);
             $table->timestamps();
@@ -302,7 +302,7 @@ return new class extends Migration
             $table->string('adresse_groupe', 30);
             $table->enum('type', ['departemental', 'regionnal', 'nationnal', 'internationnal']);
             $table->string('zone', 50);
-            $table->string('responsable', 50);
+            $table->string('responsable', 100);
             $table->timestamps();
 
 //            $table->foreign('responsable')->references('livreur_matricule')->on('livreurs');
@@ -312,7 +312,7 @@ return new class extends Migration
         Schema::create('groupage_livreurs', function (Blueprint $table){
             $table->id();
             $table->string('groupage_matricule', 100);
-            $table->string('groupe_matricule', 50);
+            $table->string('groupe_matricule', 100);
             $table->string('responsable_groupe_matricule', 50);
             $table->string('matricule_livreur', 50);
             $table->date('date_annulation')->nullable();
@@ -325,7 +325,7 @@ return new class extends Migration
         Schema::create('livraisons', function (Blueprint $table) {
             $table->id();
             $table->string('livraison_matricule',100);
-            $table->string('livreur_matricule',50)->nullable();
+            $table->string('livreur_matricule',100)->nullable();
             $table->enum('statut',['accepte', 'en_attente','en_cours','livre'])->default('en_attente');
             $table->timestamp('date_ajout')->useCurrent();
             $table->timestamp('date_traite')->nullable();
@@ -337,11 +337,11 @@ return new class extends Migration
         Schema::create('colis', function (Blueprint $table){
             $table->id();
             $table->string('coli_matricule', 100);
-            $table->string('produit_matricule',50)->nullable();
-            $table->string('client_matricule',50)->nullable();
-            $table->string('structure_matricule', 50)->nullable();
-            $table->string('vente_matricule', 50)->nullable();
-            $table->string('livraison_matricule', 50);
+            $table->string('produit_matricule',100)->nullable();
+            $table->string('client_matricule',100)->nullable();
+            $table->string('structure_matricule', 100)->nullable();
+            $table->string('vente_matricule', 100)->nullable();
+            $table->string('livraison_matricule', 100);
             $table->timestamps();
 
 //            $table->foreign('client_matricule')->references('user_matricule')->on('users');
@@ -354,8 +354,8 @@ return new class extends Migration
         Schema::create('abonnements', function (Blueprint $table) {
             $table->id();
             $table->string('abonnement_matricule',100);
-            $table->string('user_matricule',50)->nullable();
-            $table->string('structure_matricule',50)->nullable();
+            $table->string('user_matricule',100)->nullable();
+            $table->string('structure_matricule',100)->nullable();
             $table->timestamps();
 
 //            $table->foreign('abonne_simple_user')->references('user_matricule')->on('users');
@@ -369,8 +369,8 @@ return new class extends Migration
         Schema::create('likes', function (Blueprint $table) {
             $table->id();
             $table->string('aime_matricule',100);
-            $table->string('user_matricule',50)->nullable();
-            $table->string('structure_matricule',50)->nullable();
+            $table->string('user_matricule',100)->nullable();
+            $table->string('structure_matricule',100)->nullable();
             $table->timestamps();
 
         });
@@ -378,8 +378,8 @@ return new class extends Migration
         Schema::create('votes', function (Blueprint $table) {
             $table->id();
             $table->string('vote_matricule',100);
-            $table->string('user_matricule',50)->nullable();
-            $table->string('structure_matricule',50)->nullable();
+            $table->string('user_matricule',100)->nullable();
+            $table->string('structure_matricule',100)->nullable();
             $table->timestamps();
 
         });
@@ -390,9 +390,9 @@ return new class extends Migration
         Schema::create('evaluations', function (Blueprint $table) {
             $table->id();
             $table->string('evaluation_matricule',100);
-            $table->string('structure_matricule',50);
-            $table->string('user_matricule',50);
-            $table->string('auteur_matricule',50);
+            $table->string('structure_matricule',100);
+            $table->string('user_matricule',100);
+            $table->string('auteur_matricule',100);
             $table->integer('note')->nullable();
             $table->text('commentaire')->nullable();
             $table->timestamps();
@@ -407,7 +407,7 @@ return new class extends Migration
         Schema::create('paiements', function (Blueprint $table) {
             $table->id();
             $table->string('paiement_matricule',100);
-            $table->string('user_matricule',50);
+            $table->string('user_matricule',100);
             $table->enum('payment_operateur', ['orange', 'wave', 'free', 'expresso', 'virement']);
             $table->string('payment_code');
             $table->string('boutique');

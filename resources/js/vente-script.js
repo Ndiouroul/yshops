@@ -47,7 +47,6 @@ $(document).ready(function() {
                     // $globalMessage.addClass('success-message').show();
                     $('#' + formId)[0].reset(); // Réinitialise le formulaire
                     if (response.type === 'newProductSearchedCodeBarre'){
-                        // alert(JSON.stringify(response.data))
                         for (let element of response.data) {
                             if (element.quantite < quantite) {
                                 insererProduitCommande(response.nom, element.prix_vente, element.quantite);
@@ -69,14 +68,17 @@ $(document).ready(function() {
                             window.location.reload();
                         }, 1000)
                     }
+                    else{
+                        // alert(JSON.stringify(response))
+                    }
                 }else if(response.success === false){
                     $globalMessage.text(response.message).removeClass('text-green-700 bg-green-50 border-green-300').addClass('text-red-700 bg-red-50 border-red-300').show();
-                    // alert(JSON.stringify(response.data))
+                    // alert(JSON.stringify(response))
                 }
 
             },
             error: function(xhr) {
-                if (xhr.status === 422) { // Erreurs de validation de Laravel
+                if (xhr.status === 422 || xhr.status === 400) { // Erreurs de validation de Laravel
                     $globalMessage.removeClass('text-green-700 bg-green-50 border-green-300').addClass('text-red-700 bg-red-50 border-red-300')
                     $globalMessage.text('Veuillez renseigner un nom ou un code-barre.');
                     $globalMessage.addClass('error-global-message').show();
@@ -86,7 +88,7 @@ $(document).ready(function() {
                     $globalMessage.removeClass('text-green-700 bg-green-50 border-green-300').addClass('text-red-700 bg-red-50 border-red-300')
                     $globalMessage.text(errorMessage);
                     $globalMessage.addClass('error-global-message').show();
-                }
+                 }
             }
         });
     }
@@ -248,10 +250,15 @@ function getStructureDetails() {
                 const select = document.querySelector('#shopMatricule');
                 select.innerHTML = ""; // vider avant de remplir
 
+                // alert(response.data[0].structure_matricule)
                 const saved = localStorage.getItem('shopmatricule');
+                if(!saved){
+                    localStorage.setItem('shopmatricule', response.data[0].structure_matricule);
+                }
 
                 // 1️⃣ Injecter toutes les structures sauf celle du localStorage
                 response.data.forEach(element => {
+
                     if (saved !== element.structure_matricule) {
                         const option = document.createElement('option');
                         option.value = element.structure_matricule;

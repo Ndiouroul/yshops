@@ -42,6 +42,7 @@ class VenteController extends Controller
         $shopMatricule = $request->input("shopmatricule");
         $typeStructure = Structure::where('structure_matricule', $shopMatricule)
             ->get(['type_structure']);
+
        if ($typeStructure[0]['type_structure'] === 'revente'){
            $user_matricule = Auth::user()->user_matricule;
            $recue_matricule = 'recue-'.now()->format("YmdHis");
@@ -54,6 +55,13 @@ class VenteController extends Controller
                for ($i = 0; $i <= $index; $i++) {
                    $nom = trim($request->input("nom".$i));
                    $quantite = trim($request->input("quantite".$i));
+                   if($quantite <= 0){
+                       return response()->json([
+                           'success' => false,
+                           'type'    => 'numberError',
+                           'message' => "La quantite d'un produit doit etre superieur a 0",
+                       ]);
+                   }
                    $total = trim($request->input("total".$i));
                    $prix = trim($request->input("prix_unitaire".$i));
 
@@ -81,8 +89,8 @@ class VenteController extends Controller
                return response()->json([
                    'success' => false,
                    'type'    => 'noProduct',
-                   'message' => "Veuillez ajouter au moins un produit avant de soumettre la commande."
-               ], 400);
+                   'message' => "Veuillez ajouter au moins un produit avant de soumettre la commande.",
+               ]);
            }
 
            $vente_matricule = 'vente-'.now()->format("YmdHis");
@@ -132,9 +140,7 @@ class VenteController extends Controller
                        'updated_at' => now(),
                    ];
                    Recue::insert([$element]);
-
                }
-
            }
 
            Vente::create([
@@ -175,6 +181,12 @@ class VenteController extends Controller
                        ];
                    }
                }
+           }else{
+               return response()->json([
+                   'success' => false,
+                   'type'    => 'noIndex',
+                   'message' => "Index issue"
+               ], 400);
            }
 
            if (empty($productsList)) {

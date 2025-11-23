@@ -15,7 +15,7 @@ return new class extends Migration
         // Table des packages pour les structures
         Schema::create('package_structures', function (Blueprint $table) {
             $table->id();
-            $table->string('package_matricule', 50);
+            $table->string('package_matricule', 100);
             $table->string('nom', 50);
             $table->decimal('prix', 10, 2);
             $table->enum('type_package', ['gratuit', 'payant'])->default('gratuit');
@@ -107,7 +107,7 @@ return new class extends Migration
         // Table des packages pour les livreurs
         Schema::create('package_livreurs', function (Blueprint $table) {
             $table->id();
-            $table->string('package_matricule', 50);
+            $table->string('package_matricule', 100);
             $table->string('nom', 50);
             $table->decimal('prix', 10, 2);
             $table->enum('type_package', ['gratuit', 'payant'])->default('gratuit');

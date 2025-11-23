@@ -69,7 +69,7 @@ function getShopDetails() {
         success: function(response) {
             if (response.success === true) { // Vérifie la propriété 'success' du JSON du contrôleur Laravel
                 // alert(JSON.stringify(response.structure));
-                createBlocDetailsStructure(response.structures);
+                createBlocDetailsStructure(response.structure);
             }
 
         },
@@ -91,36 +91,24 @@ function createBlocDetailsStructure(details) {
 
     let baseRoute = $('meta[name="route-open-shop-accueil"]').attr("content");
 
-    // Parcourir les packages
-    Object.entries(details).forEach(([packageCode, shops]) => {
+    // Conteneur flex pour les boutiques de ce package
+    let packageContainer = document.createElement('div');
+    packageContainer.classList.add('flex', 'flex-wrap', 'gap-4', 'mb-6');
+    container.appendChild(packageContainer);
 
-        // S'il n'y a pas de boutiques dans ce package, on passe
-        if (!shops || shops.length === 0) return;
+    // Parcourir les boutiques de ce package
+    details.forEach((element, index) => {
+        let shopUrl = baseRoute.replace('__MATRICULE__', element.structure_matricule);
 
-        // // Bloc titre du package
-        // let title = document.createElement('h2');
-        // title.classList.add('text-lg', 'font-semibold', 'mt-6', 'mb-2', 'text-gray-700');
-        // title.textContent = `Package : ${packageCode}`;
-        // container.appendChild(title);
+        // Bloc principal
+        let divSubContainer = document.createElement('div');
+        divSubContainer.classList.add(
+            'shadow-md', 'cursor-pointer', 'items-center', 'flex', 'flex-col',
+            'gap-7', 'ml-2', 'w-[175px]', 'h-auto',
+            'opacity-0', 'translate-y-4', 'transition-all', 'duration-500'
+        );
 
-        // Conteneur flex pour les boutiques de ce package
-        let packageContainer = document.createElement('div');
-        packageContainer.classList.add('flex', 'flex-wrap', 'gap-4', 'mb-6');
-        container.appendChild(packageContainer);
-
-        // Parcourir les boutiques de ce package
-        shops.forEach((element, index) => {
-            let shopUrl = baseRoute.replace('__MATRICULE__', element.structure_matricule);
-
-            // Bloc principal
-            let divSubContainer = document.createElement('div');
-            divSubContainer.classList.add(
-                'shadow-md', 'cursor-pointer', 'items-center', 'flex', 'flex-col',
-                'gap-7', 'ml-2', 'w-[175px]', 'h-auto',
-                'opacity-0', 'translate-y-4', 'transition-all', 'duration-500'
-            );
-
-            divSubContainer.innerHTML = `
+        divSubContainer.innerHTML = `
                 <a href="${shopUrl}" class="relative block rounded-md overflow-hidden shadow-md">
                     <!-- Image -->
                     <img src="/storage/${element.logo}" alt="Logo"
@@ -137,13 +125,13 @@ function createBlocDetailsStructure(details) {
             `;
 
 
-            packageContainer.appendChild(divSubContainer);
+        packageContainer.appendChild(divSubContainer);
 
-            // Animation (fade-in + slide)
-            setTimeout(() => {
-                divSubContainer.classList.remove('opacity-0', 'translate-y-4');
-                divSubContainer.classList.add('opacity-100', 'translate-y-0');
-            }, index * 150);
-        });
+        // Animation (fade-in + slide)
+        setTimeout(() => {
+            divSubContainer.classList.remove('opacity-0', 'translate-y-4');
+            divSubContainer.classList.add('opacity-100', 'translate-y-0');
+        }, index * 150);
     });
+
 }
