@@ -1,22 +1,41 @@
-envVars:
-  - key: APP_ENV
-    value: production
-  - key: APP_DEBUG
-    value: 'false'
-  - key: APP_KEY
-    value: base64:uNhm4eZ9o7QuvZlCrvlPqD3EUaNqWP9gZjO5jS+Jk8c=
-  - key: APP_URL
-    value: https://yshops.onrender.com   # Remplace par l'URL Render
-  - key: DB_CONNECTION
-    value: mysql
-  - key: DB_HOST
-    value: <Render-MySQL-host>
-  - key: DB_PORT
-    value: '3306'
-  - key: DB_DATABASE
-    value: <Render-MySQL-database>
-  - key: DB_USERNAME
-    value: <Render-MySQL-username>
-  - key: DB_PASSWORD
-    value: <Render-MySQL-password>
+version: "1"
+projects:
+  - name: yshops
+    environments:
+      - name: Production
+        services:
+          - type: web
+            name: yshops
+            runtime: php
+            repo: https://github.com/Ndiouroul/yshops
+            plan: free
+            region: oregon
+            buildCommand: |
+              composer install --no-dev --optimize-autoloader
+              npm install
+              npm run build
+              php artisan key:generate
+            startCommand: php artisan serve --host 0.0.0.0 --port $PORT
+            autoDeployTrigger: commit
+            envVars:
+              - key: APP_ENV
+                value: production
+              - key: APP_DEBUG
+                value: 'false'
+              - key: APP_KEY
+                value: base64:uNhm4eZ9o7QuvZlCrvlPqD3EUaNqWP9gZjO5jS+Jk8c=
+              - key: APP_URL
+                value: https://yshops.onrender.com
+              - key: DB_CONNECTION
+                value: mysql
+              - key: DB_HOST
+                value: <Render-MySQL-host>
+              - key: DB_PORT
+                value: '3306'
+              - key: DB_DATABASE
+                value: <Render-MySQL-database>
+              - key: DB_USERNAME
+                value: <Render-MySQL-username>
+              - key: DB_PASSWORD
+                value: <Render-MySQL-password>
 
